@@ -8,10 +8,14 @@ public class Planet : MonoBehaviour
     public double average_carbon_units = 0;
     public double delta_sea_level = 0;
     
+    public float orbitalVelocity = 1.0f; // degrees per second
+    
+    Transform _planetTransform;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        _planetTransform = GetComponent<Transform>();
     }
 
     public void carbon_change(double amount)
@@ -22,7 +26,8 @@ public class Planet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // Orbit around (0, 0, 0)
+        _planetTransform.RotateAround(Vector3.zero, Vector3.up, orbitalVelocity * Time.deltaTime);
     }
     
     void LateUpdate()
