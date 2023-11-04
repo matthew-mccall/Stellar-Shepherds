@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,9 @@ public class Planet : MonoBehaviour
     public double delta_sea_level = 0;
     
     public float orbitalVelocity = 1.0f; // degrees per second
+    public GameObject mainCamera;
     
-    Transform _planetTransform;
+    private Transform _planetTransform;
     
     // Start is called before the first frame update
     void Start()
@@ -32,6 +34,22 @@ public class Planet : MonoBehaviour
     
     void LateUpdate()
     {
+        
+    }
+
+    private void OnMouseOver()
+    {
+        // outline the planet
+    }
+
+    private void OnMouseExit()
+    {
+        // remove outline
+    }
+
+    private void OnMouseDown()
+    {
+        // zoom to planet
         
     }
 }
