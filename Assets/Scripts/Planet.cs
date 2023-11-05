@@ -52,7 +52,6 @@ public class Planet : MonoBehaviour
         }
         
         _simLayerValueLabels = new List<Label>();
-        
         var rootVisualElement = _uiDocument.rootVisualElement;
         
         // Create a row for each sim layer with a label and a value
@@ -107,11 +106,8 @@ public class Planet : MonoBehaviour
         _planetTransform.Rotate(Vector3.up, spinRate * Time.deltaTime);
         
         // Get average value of layers and update labels
-        for (var i = 0; i < _simLayers.Count; i++)
+        foreach (var layer in _simLayers)
         {
-            var layer = _simLayers[i];
-            // var valueLabel = _simLayerValueLabels[i];
-            
             // get label by name
             var valueLabel = _uiDocument.rootVisualElement.Q<Label>(layer.Name);
             valueLabel.text = layer.GetAverage().ToString(CultureInfo.InvariantCulture);

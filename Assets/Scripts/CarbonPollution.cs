@@ -8,9 +8,8 @@ using UnityEngine.UI;
 public class CarbonPollution : SimLayer
 {
     // carbon content in parts per million (ppm)
-    public static int width;
-
-    public static int height;
+    private int width;
+    private int height;
 
     public static float TempCarbonChangeFromEnergy;
 
@@ -20,6 +19,10 @@ public class CarbonPollution : SimLayer
     // Start is called before the first frame update
     public CarbonPollution(String name = "") : base(name)
     {
+        species = new List<Species>();
+        width = 1;
+        height = 1;
+        
         Texture = new Texture2D(width, height);
         for (int x = 0; x < width; x++)
         {

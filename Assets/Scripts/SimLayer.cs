@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SimLayer
@@ -149,16 +150,7 @@ public class SimLayer
 
     public float GetAverage()
     {
-        float sum = 0;
-        
-        for (int x = 0; x < Texture.width; x++)
-        {
-            for (int y = 0; y < Texture.height; y++)
-            {
-                sum += Texture.GetPixel(x, y).grayscale;
-            }
-        }
-        
+        float sum = Texture.GetPixels().Sum(pixel => pixel.grayscale);
         return sum / (Texture.width * Texture.height);
     }
 }
