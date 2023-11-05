@@ -20,7 +20,7 @@ namespace Climate
     
         public Temperature(CarbonPollution carbonPollution)
         {
-            _carbonPollutionMap = carbonPollution.carbonPollutionMap;
+            _carbonPollutionMap = carbonPollution.Texture;
         }
     
         // Start is called before the first frame update

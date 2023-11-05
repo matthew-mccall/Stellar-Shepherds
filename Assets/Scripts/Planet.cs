@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Climate;
 using Ecosystem;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Planet : MonoBehaviour
 {
@@ -18,17 +20,23 @@ public class Planet : MonoBehaviour
     
     private Transform _planetTransform;
     private Outline _outline;
+    
+    private UIDocument _uiDocument;
 
     private List<SimLayer> _simLayers;
     private List<Material> _simLayerMaterials;
+    private List<Label> _simLayerValueLabels;
     
     // Start is called before the first frame update
     void Start()
     {
         _planetTransform = GetComponent<Transform>();
         _outline = GetComponent<Outline>();
+        // _uiDocument = GameObject.Find("UI").GetComponent<UIDocument>();
+        _uiDocument = GetComponent<UIDocument>();
         
         _simLayers = new List<SimLayer>();
+        _simLayers.Add(new CarbonPollution("Carbon"));
         
         // Make materials for each sim layer
         _simLayerMaterials = new List<Material>();
@@ -40,6 +48,34 @@ public class Planet : MonoBehaviour
             };
             _simLayerMaterials.Add(material);
         }
+        
+        _simLayerValueLabels = new List<Label>();
+        
+        var rootVisualElement = _uiDocument.rootVisualElement;
+        
+        // Create a row for each sim layer with a label and a value
+        foreach (var layer in _simLayers)
+        {
+            var row = new VisualElement();
+            row.style.flexDirection = FlexDirection.Row;
+            row.style.alignItems = Align.Center;
+            row.style.justifyContent = Justify.SpaceBetween;
+            
+            var label = new Label(layer.Name);
+            label.style.unityTextAlign = TextAnchor.MiddleLeft;
+            label.style.color = Color.white;
+            row.Add(label);
+            
+            var value = new Label();
+            value.style.unityTextAlign = TextAnchor.MiddleRight;
+            value.style.color = Color.white;
+            row.Add(value);
+            _simLayerValueLabels.Add(value);
+            
+            rootVisualElement.Add(row);
+        }
+        
+        HideUI();
     }
     
     // Update is called once per frame
@@ -50,6 +86,32 @@ public class Planet : MonoBehaviour
         
         // Spin on its own axis
         _planetTransform.Rotate(Vector3.up, spinRate * Time.deltaTime);
+        
+        // Get average value of layers and update labels
+        for (var i = 0; i < _simLayers.Count; i++)
+        {
+            var layer = _simLayers[i];
+            var valueLabel = _simLayerValueLabels[i];
+
+            valueLabel.text = layer.GetAverage().ToString(CultureInfo.InvariantCulture);
+        }
+
+        if (Input.GetButton("Cancel"))
+        {
+            HideUI();
+        }
+    }
+
+    public void ShowUI()
+    {
+        // show the UI
+        _uiDocument.rootVisualElement.style.display = DisplayStyle.Flex;
+    }
+
+    public void HideUI()
+    {
+        // hide the UI
+        _uiDocument.rootVisualElement.style.display = DisplayStyle.None;
     }
 
     private void OnMouseOver()
@@ -75,5 +137,7 @@ public class Planet : MonoBehaviour
         
         cameraController.targetTransform = _planetTransform;
         cameraController.SetDistanceFrom(_planetTransform.position, 600);
+        
+        ShowUI();
     }
 }
