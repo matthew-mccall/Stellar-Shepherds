@@ -21,7 +21,7 @@ public class SimLayer : MonoBehaviour
         
     }
 
-    SimLayer AddWeighted(SimLayer other, float weight)
+    internal SimLayer AddWeighted(SimLayer other, float weight)
     {
         Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
         
@@ -37,7 +37,7 @@ public class SimLayer : MonoBehaviour
         return this;
     }
     
-    SimLayer SubtractWeighted(SimLayer other, float weight)
+    internal SimLayer SubtractWeighted(SimLayer other, float weight)
     {
         Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
         

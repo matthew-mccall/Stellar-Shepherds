@@ -12,33 +12,38 @@ namespace Ecosystem
 
         private Texture2D _rainfallMap;
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
-            _rainfallMap = planet.GetComponent<Rainfall>().rainfallMap;
-            GenerateDensityMap();
-        }
+    // Start is called before the first frame update
+    void Start()
+    {
+        TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
+        LandMap = planet.GetComponent<Land>().LandMap;
+        _rainfallMap = planet.GetComponent<Rainfall>().rainfallMap;
+        DeltaSeaLevel = planet.GetComponent<Planet>().deltaSeaLevel;
+        GenerateDensityMap();
+    }
 
-        public override Texture2D Growth()
+    public override Texture2D Growth()
+    {
+        Texture2D dMap = new Texture2D(width, height);
+        for (int x = 0; x < densityMap.width; x++)
         {
-            Texture2D dMap = new Texture2D(width, height);
-            for (int x = 0; x < densityMap.width; x++)
+            for (int y = 0; y < densityMap.height; y++)
             {
-                for (int y = 0; y < densityMap.height; y++)
+                
+                if (_rainfallMap.GetPixel(x, y).grayscale > (MinRainfall / 400f) &&
+                    _rainfallMap.GetPixel(x, y).grayscale < (MaxRainfall / 400f) &&
+                    TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
+                    TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f)&&
+                    ((isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale>DeltaSeaLevel/4)||
+                     (!isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale<DeltaSeaLevel/4)))
                 {
-                    if (_rainfallMap.GetPixel(x, y).grayscale > (MinRainfall / 400f) &&
-                        _rainfallMap.GetPixel(x, y).grayscale < (MaxRainfall / 400f) &&
-                        TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
-                        TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f))
+                    int count = 0;
+                    float val = 0;
+                    if (y > 0)
                     {
-                        int count = 0;
-                        float val = 0;
-                        if (y > 0)
-                        {
-                            val += densityMap.GetPixel(x, y - 1).grayscale;
-                            count++;
-                        }
+                        val += densityMap.GetPixel(x, y - 1).grayscale;
+                        count++;
+                    }
 
                         if (y < densityMap.height)
                         {
@@ -74,38 +79,38 @@ namespace Ecosystem
             return dMap;
         }
 
-        public override Texture2D Death()
+    public override Texture2D Death()
+    {
+        Texture2D dMap = new Texture2D(width, height);
+        for (int x = 0; x < densityMap.width; x++)
         {
-            Texture2D dMap = new Texture2D(width, height);
-            for (int x = 0; x < densityMap.width; x++)
+            for (int y = 0; y < densityMap.height; y++)
             {
-                for (int y = 0; y < densityMap.height; y++)
+                if (_rainfallMap.GetPixel(x, y).grayscale > (MinRainfall / 400f) &&
+                    _rainfallMap.GetPixel(x, y).grayscale < (MaxRainfall / 400f) &&
+                    TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
+                    TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f)&&
+                    ((isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale>DeltaSeaLevel/4)||
+                     (!isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale<DeltaSeaLevel/4)))
                 {
-                    if (_rainfallMap.GetPixel(x, y).grayscale > (MinRainfall / 400f) &&
-                        _rainfallMap.GetPixel(x, y).grayscale < (MaxRainfall / 400f) &&
-                        TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
-                        TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f))
+                    float val = 0;
+                    foreach (Prey prey in _preyList)
                     {
-                        float val = 0;
-
-                        foreach (Prey prey in _preyList)
-                        {
-                            val += prey.densityMap.GetPixel(x, y).grayscale;
-                        }
-                    
-                        Color newColor = new Color(color.r, color.g, color.b, deathFactor * (val));
-                        dMap.SetPixel(x, y, newColor);
+                        val += prey.densityMap.GetPixel(x, y).grayscale;
                     }
-                    else
-                    {
-                        Color newColor = new Color(color.r, color.g, color.b, 0);
-                        dMap.SetPixel(x, y, newColor);
-                    }
+                    Color newColor = new Color(color.r, color.g, color.b, deathFactor * (val));
+                    dMap.SetPixel(x, y, newColor);
+                }
+                else
+                {
+                    Color newColor = new Color(color.r, color.g, color.b, 1);
+                    dMap.SetPixel(x, y, newColor);
                 }
             }
-
-            return dMap;
         }
+        dMap.Apply();
+        return dMap;
+    }
 
         // Update is called once per frame
         /*void Update()
