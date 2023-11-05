@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Planet : MonoBehaviour
 {
-    public double temperature_change = 0;
-    public double average_carbon_units = 0;
-    public double delta_sea_level = 0;
+    public double temperatureChange = 0;
+    public double averageCarbonUnits = 0;
+    public double deltaSeaLevel = 0;
     
     public float orbitalVelocity = 1.0f; // degrees per second
     
@@ -20,13 +20,37 @@ public class Planet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        temperatureChange = 0;
+        averageCarbonUnits = 0;
+        deltaSeaLevel = 0;
         _planetTransform = GetComponent<Transform>();
         _outline = GetComponent<Outline>();
     }
 
-    public void carbon_change(double amount)
+    public void carbonChange(double amount)
     {
-        average_carbon_units += amount;
+        averageCarbonUnits += amount;
+        return;
+    }
+
+    public double getCarbonChange()
+    {
+        return averageCarbonUnits;
+    }
+
+    public double getTemperatureChange()
+    {
+        return temperatureChange;
+    }
+
+    private void calculateTemperatureChange()
+    {
+        temperatureChange = averageCarbonUnits / 1E6;
+    }
+
+    private void calculateNewSeaLevel()
+    {
+        deltaSeaLevel = averageCarbonUnits / 1E6;
     }
     
     // Update is called once per frame
@@ -34,11 +58,12 @@ public class Planet : MonoBehaviour
     {
         // Orbit around (0, 0, 0)
         _planetTransform.RotateAround(Vector3.zero, Vector3.up, orbitalVelocity * Time.deltaTime);
+        calculateNewSeaLevel();
     }
     
     void LateUpdate()
     {
-        
+        calculateTemperatureChange();
     }
 
     private void OnMouseOver()
