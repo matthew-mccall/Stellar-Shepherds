@@ -51,7 +51,6 @@ public class Prey : Species
             for (int y = 0; y < densityMap.height; y++)
             {
                 float predationAmount = 0;
-                int count = 0;
                 foreach (Predator predator in _predatorsList)
                 {
                     predationAmount += predator.densityMap.GetPixel(x, y).grayscale;
