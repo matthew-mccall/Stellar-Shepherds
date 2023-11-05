@@ -65,8 +65,8 @@ public class Biome : MonoBehaviour
     {
         LandMap = Planet.GetComponent<Land>().LandMap;
         DeltaSeaHeight = Planet.GetComponent<Planet>().deltaSeaLevel;
-        RainMap = Planet.GetComponent<Rainfall>().rainfallMap;
-        TemperatureMap = Planet.GetComponent<Temperature>().temperatureMap;
+        RainMap = Planet.GetComponent<Climate.Rainfall>().rainfallMap;
+        TemperatureMap = Planet.GetComponent<Climate.Temperature>().temperatureMap;
     }
 
     // Update is called once per frame

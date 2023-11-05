@@ -2,15 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Predator : Species
+namespace Ecosystem
 {
-    private List<Prey> _preysList;
-    // Start is called before the first frame update
-    void Start()
+    public class Predator : Species
     {
-        GenerateDensityMap();
-        TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
-    }
+        private List<Prey> _preysList;
+
+        public Predator(List<Prey> preysList)
+        {
+            _preysList = preysList;
+        }
+    
+        // Start is called before the first frame update
+        void Start()
+        {
+            GenerateDensityMap();
+            // TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
+        }
     
     public override Texture2D Growth()
     {
@@ -119,4 +127,5 @@ public class Predator : Species
         return dMap;
     }
     
+    }
 }
