@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,11 @@ public class Planet : MonoBehaviour
     
     public float orbitalVelocity = 1.0f; // degrees per second
     
-    Transform _planetTransform;
+    public int hoverOutlineWidth = 3;
+    public Vector3 cameraOffset = new Vector3(0, 0, -400);
+    
+    private Transform _planetTransform;
+    private Outline _outline;
     
     // Start is called before the first frame update
     void Start()
@@ -19,6 +24,7 @@ public class Planet : MonoBehaviour
         averageCarbonUnits = 0;
         deltaSeaLevel = 0;
         _planetTransform = GetComponent<Transform>();
+        _outline = GetComponent<Outline>();
     }
 
     public void carbonChange(double amount)
@@ -58,5 +64,31 @@ public class Planet : MonoBehaviour
     void LateUpdate()
     {
         calculateTemperatureChange();
+    }
+
+    private void OnMouseOver()
+    {
+        if (Camera.main == null) return;
+        if (Camera.main.transform.parent == _planetTransform) return;
+        
+        // outline the planet
+        _outline.OutlineWidth = hoverOutlineWidth;
+    }
+
+    private void OnMouseExit()
+    {
+        // remove outline
+        _outline.OutlineWidth = 0;
+    }
+
+    private void OnMouseDown()
+    {
+        if (Camera.main == null) return;
+        
+        var cameraTransform = Camera.main.transform;
+        
+        cameraTransform.SetParent(_planetTransform);
+        cameraTransform.localPosition = cameraOffset;
+        cameraTransform.LookAt(_planetTransform);
     }
 }
