@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class Species : MonoBehaviour
     protected internal Texture2D densityMap;
     
     public static GameObject planet;
+    internal Texture2D TemperatureMap;
 
     public void GenerateDensityMap()
     {
@@ -36,5 +38,29 @@ public class Species : MonoBehaviour
             }
         }
         densityMap.Apply();
+    }
+
+    public virtual Texture2D Growth()
+    {
+        return new Texture2D(width, height);
+    }
+
+    public virtual Texture2D Death()
+    {
+        return new Texture2D(width, height);
+    }
+
+    public void Update()
+    {
+        Texture2D growthMap = Growth();
+        Texture2D deathMap = Death();
+        for (int x = 0; x < densityMap.width; x++)
+        {
+            for (int y = 0; y < densityMap.height; y++)
+            {
+                densityMap.SetPixel(x, y, new Color(color.r, color.g, color.b, 
+                    (densityMap.GetPixel(x,y).grayscale+growthMap.GetPixel(x,y).grayscale+deathMap.GetPixel(x,y).grayscale)));
+            }
+        }
     }
 }

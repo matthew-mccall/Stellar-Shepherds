@@ -29,6 +29,6 @@ public class CarbonPollution : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // grab all sources of carbon pollution/reduction and sum their changes
     }
 }
