@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Climate;
+using Ecosystem;
 using UnityEngine;
 
 public class Planet : MonoBehaviour
@@ -15,8 +17,11 @@ public class Planet : MonoBehaviour
     public int hoverOutlineWidth = 3;
     
     private Transform _planetTransform;
-    
     private Outline _outline;
+    
+    private List<Species> _speciesList;
+    private Rainfall _rainfall;
+    private Temperature _temperature;
     
     // Start is called before the first frame update
     void Start()

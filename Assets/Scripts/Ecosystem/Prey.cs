@@ -1,75 +1,77 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Climate;
 using UnityEngine;
 
-public class Prey : Species
+namespace Ecosystem
 {
-    private List<Producer> _producersList;
-
-    private List<Predator> _predatorsList;
-    // Start is called before the first frame update
-    void Start()
+    public class Prey : Species
     {
-        GenerateDensityMap();
-        TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
-    }
+        private List<Producer> _producersList;
 
-    public override Texture2D Growth()
-    {
-        Texture2D dMap = new Texture2D(width, height);
-        for (int x = 0; x < densityMap.width; x++)
+        private List<Predator> _predatorsList;
+        // Start is called before the first frame update
+        void Start()
         {
-            for (int y = 0; y < densityMap.height; y++)
-            {
-                float foodAvailability = 0;
-                foreach (Producer producer in _producersList)
-                {
-                    foodAvailability += producer.densityMap.GetPixel(x, y).grayscale;
-                }
-                if (TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
-                    TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f) && 
-                    foodAvailability>=growthFactor*densityMap.GetPixel(x,y).grayscale)
-                {
-                    Color newColor = new Color(color.r, color.g, color.b, growthFactor*(foodAvailability-growthFactor*densityMap.GetPixel(x,y).grayscale));
-                }
-                else
-                {
-                    Color newColor = new Color(color.r, color.g, color.b, 0);
-                    dMap.SetPixel(x, y, newColor);
-                }
-            }
-        } 
-        return dMap;
-    }
+            GenerateDensityMap();
+            TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
+        }
 
-    public override Texture2D Death()
-    {
-        Texture2D dMap = new Texture2D(width, height);
-        for (int x = 0; x < densityMap.width; x++)
+        public override Texture2D Growth()
         {
-            for (int y = 0; y < densityMap.height; y++)
+            Texture2D dMap = new Texture2D(width, height);
+            for (int x = 0; x < densityMap.width; x++)
             {
-                float predationAmount = 0;
-                foreach (Predator predator in _predatorsList)
+                for (int y = 0; y < densityMap.height; y++)
                 {
-                    predationAmount += predator.densityMap.GetPixel(x, y).grayscale;
+                    float foodAvailability = 0;
+                    foreach (Producer producer in _producersList)
+                    {
+                        foodAvailability += producer.densityMap.GetPixel(x, y).grayscale;
+                    }
+                    if (TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
+                        TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f) && 
+                        foodAvailability>=growthFactor*densityMap.GetPixel(x,y).grayscale)
+                    {
+                        Color newColor = new Color(color.r, color.g, color.b, growthFactor*(foodAvailability-growthFactor*densityMap.GetPixel(x,y).grayscale));
+                    }
+                    else
+                    {
+                        Color newColor = new Color(color.r, color.g, color.b, 0);
+                        dMap.SetPixel(x, y, newColor);
+                    }
                 }
-                if (TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
-                    TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f) && 
-                    predationAmount>=growthFactor*densityMap.GetPixel(x,y).grayscale)
+            } 
+            return dMap;
+        }
+
+        public override Texture2D Death()
+        {
+            Texture2D dMap = new Texture2D(width, height);
+            for (int x = 0; x < densityMap.width; x++)
+            {
+                for (int y = 0; y < densityMap.height; y++)
                 {
-                    Color newColor = new Color(color.r, color.g, color.b, deathFactor*(predationAmount));
-                    dMap.SetPixel(x, y, newColor);
+                    float predationAmount = 0;
+                    foreach (Predator predator in _predatorsList)
+                    {
+                        predationAmount += predator.densityMap.GetPixel(x, y).grayscale;
+                    }
+                    if (TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
+                        TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f) && 
+                        predationAmount>=growthFactor*densityMap.GetPixel(x,y).grayscale)
+                    {
+                        Color newColor = new Color(color.r, color.g, color.b, deathFactor*(predationAmount));
+                        dMap.SetPixel(x, y, newColor);
+                    }
+                    else
+                    {
+                        Color newColor = new Color(color.r, color.g, color.b, 1f);
+                        dMap.SetPixel(x, y, newColor);
+                    }
                 }
-                else
-                {
-                    Color newColor = new Color(color.r, color.g, color.b, 1f);
-                    dMap.SetPixel(x, y, newColor);
-                }
-            }
-        } 
-        return dMap;
-    }
+            } 
+            return dMap;
+        }
     
+    }
 }
