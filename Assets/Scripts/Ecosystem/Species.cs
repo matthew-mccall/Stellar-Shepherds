@@ -62,7 +62,7 @@ public class Species : MonoBehaviour
             for (int y = 0; y < densityMap.height; y++)
             {
                 densityMap.SetPixel(x, y, new Color(color.r, color.g, color.b, 
-                    (densityMap.GetPixel(x,y).grayscale+growthMap.GetPixel(x,y).grayscale+deathMap.GetPixel(x,y).grayscale)));
+                    (densityMap.GetPixel(x,y).grayscale+growthMap.GetPixel(x,y).grayscale-deathMap.GetPixel(x,y).grayscale)));
             }
         }
         densityMap.Apply();

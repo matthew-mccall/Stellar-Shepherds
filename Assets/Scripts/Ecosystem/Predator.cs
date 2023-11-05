@@ -77,6 +77,9 @@ public class Predator : Species
                                 dMap.SetPixel(x, y, newColor);
                             }
                             break;
+                        default:
+                            dMap.SetPixel(x,y, newColor);
+                            break;
                     }
                 }
                 else

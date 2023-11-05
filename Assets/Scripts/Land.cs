@@ -32,10 +32,4 @@ public class Land : MonoBehaviour
         }
         LandMap.Apply();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
