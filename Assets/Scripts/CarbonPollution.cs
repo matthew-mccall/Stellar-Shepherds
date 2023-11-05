@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CarbonPollution : MonoBehaviour
 {
+    // carbon content in parts per million (ppm)
     public Texture2D carbonPollutionMap;
 
     public static int width;
@@ -23,7 +25,7 @@ public class CarbonPollution : MonoBehaviour
             }
         }
     }
-
+    
     // Update is called once per frame
     void Update()
     {
