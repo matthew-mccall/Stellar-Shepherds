@@ -1,10 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace Climate
 {
     public class Rainfall : SimLayer
     {
-
         public static int width;
 
         public static int height;
@@ -12,7 +12,7 @@ namespace Climate
         public static int rainScale;
         public static Color color = Color.cyan;
         // Start is called before the first frame update
-        void Start()
+        public Rainfall(String name = "") : base(name)
         {
             Texture = new Texture2D(width, height);
             for (int x = 0; x < Texture.width; x++)
