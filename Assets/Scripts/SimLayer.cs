@@ -21,7 +21,7 @@ public class SimLayer
         _negativeDeltaTextures = new List<Texture2D>();
     }
     
-    internal SimLayer AddWeighted(SimLayer other, float weight)
+    internal SimLayer AddWeighted(SimLayer other, double weight)
     {
         Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
         
@@ -29,7 +29,7 @@ public class SimLayer
         {
             for (int y = 0; y < Texture.height; y++)
             {
-                deltaTexture.SetPixel(x, y, other.Texture.GetPixel(x, y) * weight);
+                deltaTexture.SetPixel(x, y, other.Texture.GetPixel(x, y) * (float) weight);
             }
         }
         
@@ -37,7 +37,7 @@ public class SimLayer
         return this;
     }
     
-    internal SimLayer SubtractWeighted(SimLayer other, float weight)
+    internal SimLayer SubtractWeighted(SimLayer other, double weight)
     {
         Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
         
@@ -45,7 +45,7 @@ public class SimLayer
         {
             for (int y = 0; y < Texture.height; y++)
             {
-                deltaTexture.SetPixel(x, y, other.Texture.GetPixel(x, y) * weight);
+                deltaTexture.SetPixel(x, y, other.Texture.GetPixel(x, y) * (float) weight);
             }
         }
         
@@ -119,7 +119,7 @@ public class SimLayer
             }
         }
         
-        _positiveDeltaTextures.Add(deltaTexture);
+        _negativeDeltaTextures.Add(deltaTexture);
         return this;
     }
     

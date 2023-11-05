@@ -19,8 +19,8 @@ public class Planet : MonoBehaviour
     
     public int hoverOutlineWidth = 3;
     
-    public int simLayerWidth = 512;
-    public int simLayerHeight = 512;
+    public int simLayerWidth = 10;
+    public int simLayerHeight = 10;
     
     private Transform _planetTransform;
     private Outline _outline;
@@ -31,6 +31,10 @@ public class Planet : MonoBehaviour
     private List<Material> _simLayerMaterials;
     private List<Label> _simLayerValueLabels;
     
+    private Temperature _temperature;
+    private Rainfall _rainfall;
+    private CarbonPollution _carbonPollution;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -38,11 +42,18 @@ public class Planet : MonoBehaviour
         _outline = GetComponent<Outline>();
         // _uiDocument = GameObject.Find("UI").GetComponent<UIDocument>();
         _uiDocument = GetComponent<UIDocument>();
+        
+        // Make sim layers
+        _temperature = new Temperature(simLayerWidth, simLayerHeight);
+        _rainfall = new Rainfall(simLayerWidth, simLayerHeight);
+        _carbonPollution = new CarbonPollution(simLayerWidth, simLayerHeight);
 
-        _simLayers = new List<SimLayer>();
-        _simLayers.Add(new Temperature(simLayerWidth, simLayerHeight));
-        _simLayers.Add(new Rainfall(simLayerWidth, simLayerHeight));
-        _simLayers.Add(new CarbonPollution(simLayerWidth, simLayerHeight));
+        _simLayers = new List<SimLayer>
+        {
+            _temperature,
+            _rainfall,
+            _carbonPollution
+        };
 
         // Make materials for each sim layer
         _simLayerMaterials = new List<Material>();
@@ -108,6 +119,10 @@ public class Planet : MonoBehaviour
         
         // Spin on its own axis
         _planetTransform.Rotate(Vector3.up, spinRate * Time.deltaTime);
+        
+        _temperature
+            .AddWeighted(_carbonPollution, 1e-3 * Time.deltaTime)
+            .ApplyDeltas();
         
         // Get average value of layers and update labels
         foreach (var layer in _simLayers)
