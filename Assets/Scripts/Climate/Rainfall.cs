@@ -11,11 +11,8 @@ namespace Climate
         public static int rainScale;
         public static Color color = Color.cyan;
         // Start is called before the first frame update
-        public Rainfall(String name = "") : base(name)
+        public Rainfall(int width, int height) : base("Rainfall", width, height)
         {
-            width = 1;
-            height = 1;
-            
             Texture = new Texture2D(width, height);
             for (int x = 0; x < Texture.width; x++)
             {

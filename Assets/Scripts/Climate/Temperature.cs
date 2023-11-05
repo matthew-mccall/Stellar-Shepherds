@@ -17,10 +17,9 @@ namespace Climate
         public CarbonPollution CarbonPollution;
         
         // Start is called before the first frame update
-        void Start()
+        public Temperature(int width, int height) : base("Temperature", width, height)
         {
             // _carbonPollutionMap = planet.GetComponent<CarbonPollution>().carbonPollutionMap;
-            Texture = new Texture2D(width, height);
             for (int x = 0; x < Texture.width; x++)
             {
                 for (int y = 0; y < Texture.height; y++) 
@@ -47,7 +46,7 @@ namespace Climate
             }
             Texture.Apply();
 
-            AddWeighted(CarbonPollution, (float)1E-6);
+            // AddWeighted(CarbonPollution, (float)1E-6);
         }
 
         

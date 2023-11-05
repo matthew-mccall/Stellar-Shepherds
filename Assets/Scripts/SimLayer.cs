@@ -13,12 +13,12 @@ public class SimLayer
     internal List<Texture2D> _negativeDeltaTextures;
     
     // Start is called before the first frame update
-    public SimLayer(String name="")
+    public SimLayer(String name="", int width=1, int height=1)
     {
+        Texture = new Texture2D(width, height);
         Name = name;
         _positiveDeltaTextures = new List<Texture2D>();
         _negativeDeltaTextures = new List<Texture2D>();
-        Texture2D texture = new Texture2D(1, 1);
     }
     
     internal SimLayer AddWeighted(SimLayer other, float weight)

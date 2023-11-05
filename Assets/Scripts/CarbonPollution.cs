@@ -17,13 +17,10 @@ public class CarbonPollution : SimLayer
 
     public static Color color = Color.red;
     // Start is called before the first frame update
-    public CarbonPollution(String name = "") : base(name)
+    public CarbonPollution(int width, int height) : base("Carbon", width, height)
     {
         species = new List<Species>();
-        width = 1;
-        height = 1;
         
-        Texture = new Texture2D(width, height);
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)

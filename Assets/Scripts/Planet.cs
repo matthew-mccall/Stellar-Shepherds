@@ -19,6 +19,9 @@ public class Planet : MonoBehaviour
     
     public int hoverOutlineWidth = 3;
     
+    public int simLayerWidth = 512;
+    public int simLayerHeight = 512;
+    
     private Transform _planetTransform;
     private Outline _outline;
     
@@ -35,11 +38,12 @@ public class Planet : MonoBehaviour
         _outline = GetComponent<Outline>();
         // _uiDocument = GameObject.Find("UI").GetComponent<UIDocument>();
         _uiDocument = GetComponent<UIDocument>();
-        
+
         _simLayers = new List<SimLayer>();
-        _simLayers.Add(new CarbonPollution("Carbon"));
-        _simLayers.Add(new Rainfall("Rainfall"));
-        
+        _simLayers.Add(new Temperature(simLayerWidth, simLayerHeight));
+        _simLayers.Add(new Rainfall(simLayerWidth, simLayerHeight));
+        _simLayers.Add(new CarbonPollution(simLayerWidth, simLayerHeight));
+
         // Make materials for each sim layer
         _simLayerMaterials = new List<Material>();
         foreach (var simLayer in _simLayers)
