@@ -52,7 +52,7 @@ namespace Ecosystem
             return new Texture2D(width, height);
         }
 
-        public void Update()
+        public void PopulationChange()
         {
             Texture2D growthMap = Growth();
             Texture2D deathMap = Death();
@@ -63,10 +63,16 @@ namespace Ecosystem
                     densityMap.SetPixel(x, y, new Color(color.r, color.g, color.b,
                         (densityMap.GetPixel(x, y).grayscale + growthMap.GetPixel(x, y).grayscale -
                          deathMap.GetPixel(x, y).grayscale)));
+                    
                 }
             }
 
             densityMap.Apply();
+        }
+        
+        public void Update()
+        {
+            PopulationChange();
         }
     }
 }

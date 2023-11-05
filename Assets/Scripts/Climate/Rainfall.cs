@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Climate
 {
-    public class Rainfall : MonoBehaviour
+    public class Rainfall : SimLayer
     {
         public Texture2D rainfallMap;
 

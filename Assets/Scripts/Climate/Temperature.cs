@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Climate
 {
-    public class Temperature : MonoBehaviour
+    public class Temperature : SimLayer
     {
         public Texture2D temperatureMap;
 

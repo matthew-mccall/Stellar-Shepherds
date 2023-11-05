@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Biome : MonoBehaviour
+public class Biome : SimLayer
 {
     public static GameObject Planet;
 

@@ -6,20 +6,8 @@ public class SimLayer : MonoBehaviour
 {
     private Texture2D _texture;
     private List<Texture2D> _deltaTextures;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    SimLayer AddWeighted(SimLayer other, float weight)
+    internal SimLayer AddWeighted(SimLayer other, float weight)
     {
         Texture2D deltaTexture = new Texture2D(_texture.width, _texture.height);
         
@@ -35,7 +23,7 @@ public class SimLayer : MonoBehaviour
         return this;
     }
     
-    SimLayer SubtractWeighted(SimLayer other, float weight)
+    internal SimLayer SubtractWeighted(SimLayer other, float weight)
     {
         Texture2D deltaTexture = new Texture2D(_texture.width, _texture.height);
         

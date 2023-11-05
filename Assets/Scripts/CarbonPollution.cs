@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CarbonPollution : MonoBehaviour
+public class CarbonPollution : SimLayer
 {
     // carbon content in parts per million (ppm)
     public Texture2D carbonPollutionMap;
@@ -30,5 +30,6 @@ public class CarbonPollution : MonoBehaviour
     void Update()
     {
         // grab all sources of carbon pollution/reduction and sum their changes
+        // Energy
     }
 }

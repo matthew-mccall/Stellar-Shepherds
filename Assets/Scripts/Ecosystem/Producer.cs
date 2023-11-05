@@ -94,12 +94,10 @@ namespace Ecosystem
                      (!isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale<DeltaSeaLevel/4)))
                 {
                     float val = 0;
-
-                        foreach (Prey prey in _preyList)
-                        {
-                            val += prey.densityMap.GetPixel(x, y).grayscale;
-                        }
-                    
+                    foreach (Prey prey in _preyList)
+                    {
+                        val += prey.densityMap.GetPixel(x, y).grayscale;
+                    }
                     Color newColor = new Color(color.r, color.g, color.b, deathFactor * (val));
                     dMap.SetPixel(x, y, newColor);
                 }
