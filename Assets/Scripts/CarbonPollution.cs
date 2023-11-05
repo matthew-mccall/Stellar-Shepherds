@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Ecosystem;
@@ -17,7 +18,7 @@ public class CarbonPollution : SimLayer
 
     public static Color color = Color.red;
     // Start is called before the first frame update
-    void Start()
+    public CarbonPollution(String name = "") : base(name)
     {
         Texture = new Texture2D(width, height);
         for (int x = 0; x < width; x++)
@@ -55,7 +56,7 @@ public class CarbonPollution : SimLayer
         {
             for (int y = 0; y < height; y++)
             {
-                emissions.SetPixel(x,y, new Color(color.r, color.g, color.b, TempCarbonChangeFromEnergy));
+                emissions.SetPixel(x, y, new Color(color.r, color.g, color.b, 0.01f));
             }
         }
 

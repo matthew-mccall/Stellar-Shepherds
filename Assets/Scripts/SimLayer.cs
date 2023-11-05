@@ -1,26 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimLayer : MonoBehaviour
+public class SimLayer
 {
     public Texture2D Texture { get; internal set; }
+    public String Name { get; private set; }
     
     internal List<Texture2D> _positiveDeltaTextures;
     internal List<Texture2D> _negativeDeltaTextures;
     
     // Start is called before the first frame update
-    void Start()
+    public SimLayer(String name="")
     {
-        
+        Name = name;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     internal SimLayer AddWeighted(SimLayer other, float weight)
     {
         Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
@@ -148,19 +144,18 @@ public class SimLayer : MonoBehaviour
         }
     }
 
-    Color GetAverage()
+    public float GetAverage()
     {
-        Color average = new Color(0, 0, 0, 0);
+        float sum = 0;
         
         for (int x = 0; x < Texture.width; x++)
         {
             for (int y = 0; y < Texture.height; y++)
             {
-                average += Texture.GetPixel(x, y);
+                sum += Texture.GetPixel(x, y).grayscale;
             }
         }
         
-        average /= Texture.width * Texture.height;
-        return average;
+        return sum / (Texture.width * Texture.height);
     }
 }
