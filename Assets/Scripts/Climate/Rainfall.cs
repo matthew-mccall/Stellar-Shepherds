@@ -1,11 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace Climate
 {
     public class Rainfall : SimLayer
     {
-        public Texture2D rainfallMap;
-
         public static int width;
 
         public static int height;
@@ -13,18 +12,18 @@ namespace Climate
         public static int rainScale;
         public static Color color = Color.cyan;
         // Start is called before the first frame update
-        void Start()
+        public Rainfall(String name = "") : base(name)
         {
-            rainfallMap = new Texture2D(width, height);
-            for (int x = 0; x < rainfallMap.width; x++)
+            Texture = new Texture2D(width, height);
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < rainfallMap.height; y++) 
+                for (int y = 0; y < Texture.height; y++) 
                 { 
-                    float xCoord = (float)x / rainfallMap.width * rainScale;
-                    float yCoord = (float)y / rainfallMap.height * rainScale; 
+                    float xCoord = (float)x / Texture.width * rainScale;
+                    float yCoord = (float)y / Texture.height * rainScale; 
                     float density = Mathf.PerlinNoise(xCoord, yCoord);
                     Color pixelColor = new Color(color.r, color.g, color.b, density);
-                    rainfallMap.SetPixel(x, y, pixelColor);
+                    Texture.SetPixel(x, y, pixelColor);
                 }
             }
         }

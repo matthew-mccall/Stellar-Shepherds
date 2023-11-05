@@ -17,7 +17,7 @@ namespace Ecosystem
     {
         TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
         LandMap = planet.GetComponent<Land>().LandMap;
-        _rainfallMap = planet.GetComponent<Rainfall>().rainfallMap;
+        _rainfallMap = planet.GetComponent<Rainfall>().Texture;
         DeltaSeaLevel = planet.GetComponent<Planet>().deltaSeaLevel;
         GenerateDensityMap();
     }

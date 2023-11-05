@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Climate;
 using Ecosystem;
 using UnityEngine;
@@ -37,6 +38,7 @@ public class Planet : MonoBehaviour
         
         _simLayers = new List<SimLayer>();
         _simLayers.Add(new CarbonPollution("Carbon"));
+        _simLayers.Add(new Rainfall("Rainfall"));
         
         // Make materials for each sim layer
         _simLayerMaterials = new List<Material>();
@@ -56,21 +58,38 @@ public class Planet : MonoBehaviour
         // Create a row for each sim layer with a label and a value
         foreach (var layer in _simLayers)
         {
-            var row = new VisualElement();
-            row.style.flexDirection = FlexDirection.Row;
-            row.style.alignItems = Align.Center;
-            row.style.justifyContent = Justify.SpaceBetween;
-            
-            var label = new Label(layer.Name);
-            label.style.unityTextAlign = TextAnchor.MiddleLeft;
-            label.style.color = Color.white;
+            var row = new VisualElement
+            {
+                style =
+                {
+                    flexDirection = FlexDirection.Row,
+                    alignItems = Align.Center,
+                    justifyContent = Justify.SpaceBetween
+                }
+            };
+
+            var label = new Label(layer.Name)
+            {
+                style =
+                {
+                    unityTextAlign = TextAnchor.MiddleLeft,
+                    color = Color.white
+                }
+            };
             row.Add(label);
             
-            var value = new Label();
-            value.style.unityTextAlign = TextAnchor.MiddleRight;
-            value.style.color = Color.white;
-            row.Add(value);
+            var value = new Label
+            {
+                style =
+                {
+                    unityTextAlign = TextAnchor.MiddleRight,
+                    color = Color.white
+                },
+                name = layer.Name
+            };
+            // row.Add(value);
             _simLayerValueLabels.Add(value);
+            row.Add(_simLayerValueLabels.Last());
             
             rootVisualElement.Add(row);
         }
@@ -91,8 +110,10 @@ public class Planet : MonoBehaviour
         for (var i = 0; i < _simLayers.Count; i++)
         {
             var layer = _simLayers[i];
-            var valueLabel = _simLayerValueLabels[i];
-
+            // var valueLabel = _simLayerValueLabels[i];
+            
+            // get label by name
+            var valueLabel = _uiDocument.rootVisualElement.Q<Label>(layer.Name);
             valueLabel.text = layer.GetAverage().ToString(CultureInfo.InvariantCulture);
         }
 

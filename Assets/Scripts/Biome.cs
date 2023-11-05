@@ -65,7 +65,7 @@ public class Biome : SimLayer
     {
         LandMap = Planet.GetComponent<Land>().LandMap;
         DeltaSeaHeight = Planet.GetComponent<Planet>().deltaSeaLevel;
-        RainMap = Planet.GetComponent<Climate.Rainfall>().rainfallMap;
+        RainMap = Planet.GetComponent<Climate.Rainfall>().Texture;
         TemperatureMap = Planet.GetComponent<Climate.Temperature>().temperatureMap;
     }
 

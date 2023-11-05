@@ -14,6 +14,9 @@ public class SimLayer
     public SimLayer(String name = "")
     {
         Name = name;
+        _positiveDeltaTextures = new List<Texture2D>();
+        _negativeDeltaTextures = new List<Texture2D>();
+        Texture2D texture = new Texture2D(1, 1);
     }
     
     internal SimLayer AddWeighted(SimLayer other, float weight)
