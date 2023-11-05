@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SimLayer : MonoBehaviour
 {
-    private Texture2D _texture;
+    public Texture2D Texture { get; private set; }
+    
     private List<Texture2D> _positiveDeltaTextures;
     private List<Texture2D> _negativeDeltaTextures;
     
@@ -22,13 +23,13 @@ public class SimLayer : MonoBehaviour
 
     SimLayer AddWeighted(SimLayer other, float weight)
     {
-        Texture2D deltaTexture = new Texture2D(_texture.width, _texture.height);
+        Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
         
-        for (int x = 0; x < _texture.width; x++)
+        for (int x = 0; x < Texture.width; x++)
         {
-            for (int y = 0; y < _texture.height; y++)
+            for (int y = 0; y < Texture.height; y++)
             {
-                deltaTexture.SetPixel(x, y, other._texture.GetPixel(x, y) * weight);
+                deltaTexture.SetPixel(x, y, other.Texture.GetPixel(x, y) * weight);
             }
         }
         
@@ -38,13 +39,13 @@ public class SimLayer : MonoBehaviour
     
     SimLayer SubtractWeighted(SimLayer other, float weight)
     {
-        Texture2D deltaTexture = new Texture2D(_texture.width, _texture.height);
+        Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
         
-        for (int x = 0; x < _texture.width; x++)
+        for (int x = 0; x < Texture.width; x++)
         {
-            for (int y = 0; y < _texture.height; y++)
+            for (int y = 0; y < Texture.height; y++)
             {
-                deltaTexture.SetPixel(x, y, other._texture.GetPixel(x, y) * weight);
+                deltaTexture.SetPixel(x, y, other.Texture.GetPixel(x, y) * weight);
             }
         }
         
@@ -54,35 +55,35 @@ public class SimLayer : MonoBehaviour
 
     SimLayer DistributeEvenly(float speed)
     {
-        Texture2D deltaTexture = new Texture2D(_texture.width, _texture.height);
+        Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
         
-        for (int x = 0; x < _texture.width; x++)
+        for (int x = 0; x < Texture.width; x++)
         {
-            for (int y = 0; y < _texture.height; y++)
+            for (int y = 0; y < Texture.height; y++)
             {
-                float val = _texture.GetPixel(x, y).grayscale;
+                float val = Texture.GetPixel(x, y).grayscale;
                 float valLeft = 0;
                 float valRight = 0;
                 float valUp = 0;
                 float valDown = 0;
                 if (x > 0)
                 {
-                    valLeft = _texture.GetPixel(x - 1, y).grayscale;
+                    valLeft = Texture.GetPixel(x - 1, y).grayscale;
                 }
 
-                if (x < _texture.width - 1)
+                if (x < Texture.width - 1)
                 {
-                    valRight = _texture.GetPixel(x + 1, y).grayscale;
+                    valRight = Texture.GetPixel(x + 1, y).grayscale;
                 }
 
                 if (y > 0)
                 {
-                    valDown = _texture.GetPixel(x, y - 1).grayscale;
+                    valDown = Texture.GetPixel(x, y - 1).grayscale;
                 }
 
-                if (y < _texture.height - 1)
+                if (y < Texture.height - 1)
                 {
-                    valUp = _texture.GetPixel(x, y + 1).grayscale;
+                    valUp = Texture.GetPixel(x, y + 1).grayscale;
                 }
 
                 float valTotal = val + valLeft + valRight + valUp + valDown;
@@ -99,14 +100,14 @@ public class SimLayer : MonoBehaviour
 
     SimLayer Mask(SimLayer other, float cutoff)
     {
-        Texture2D deltaTexture = new Texture2D(_texture.width, _texture.height);
+        Texture2D deltaTexture = new Texture2D(Texture.width, Texture.height);
         
-        for (int x = 0; x < _texture.width; x++)
+        for (int x = 0; x < Texture.width; x++)
         {
-            for (int y = 0; y < _texture.height; y++)
+            for (int y = 0; y < Texture.height; y++)
             {
-                float val = _texture.GetPixel(x, y).grayscale;
-                float otherVal = other._texture.GetPixel(x, y).grayscale;
+                float val = Texture.GetPixel(x, y).grayscale;
+                float otherVal = other.Texture.GetPixel(x, y).grayscale;
                 if (otherVal < cutoff)
                 {
                     deltaTexture.SetPixel(x, y, new Color(val, val, val, 0));
@@ -126,22 +127,22 @@ public class SimLayer : MonoBehaviour
     {
         foreach (Texture2D deltaTexture in _positiveDeltaTextures)
         {
-            for (int x = 0; x < _texture.width; x++)
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < _texture.height; y++)
+                for (int y = 0; y < Texture.height; y++)
                 {
-                    _texture.SetPixel(x, y, _texture.GetPixel(x, y) + deltaTexture.GetPixel(x, y));
+                    Texture.SetPixel(x, y, Texture.GetPixel(x, y) + deltaTexture.GetPixel(x, y));
                 }
             }
         }
         
         foreach (Texture2D deltaTexture in _negativeDeltaTextures)
         {
-            for (int x = 0; x < _texture.width; x++)
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < _texture.height; y++)
+                for (int y = 0; y < Texture.height; y++)
                 {
-                    _texture.SetPixel(x, y, _texture.GetPixel(x, y) - deltaTexture.GetPixel(x, y));
+                    Texture.SetPixel(x, y, Texture.GetPixel(x, y) - deltaTexture.GetPixel(x, y));
                 }
             }
         }
@@ -151,15 +152,15 @@ public class SimLayer : MonoBehaviour
     {
         Color average = new Color(0, 0, 0, 0);
         
-        for (int x = 0; x < _texture.width; x++)
+        for (int x = 0; x < Texture.width; x++)
         {
-            for (int y = 0; y < _texture.height; y++)
+            for (int y = 0; y < Texture.height; y++)
             {
-                average += _texture.GetPixel(x, y);
+                average += Texture.GetPixel(x, y);
             }
         }
         
-        average /= _texture.width * _texture.height;
+        average /= Texture.width * Texture.height;
         return average;
     }
 }
