@@ -10,11 +10,12 @@ public class Planet : MonoBehaviour
     public double deltaSeaLevel = 0;
     
     public float orbitalVelocity = 1.0f; // degrees per second
+    public float spinRate = 6.0f; // degrees per second
     
     public int hoverOutlineWidth = 3;
-    public Vector3 cameraOffset = new Vector3(0, 0, -400);
     
     private Transform _planetTransform;
+    
     private Outline _outline;
     
     // Start is called before the first frame update
@@ -59,6 +60,9 @@ public class Planet : MonoBehaviour
         // Orbit around (0, 0, 0)
         _planetTransform.RotateAround(Vector3.zero, Vector3.up, orbitalVelocity * Time.deltaTime);
         calculateNewSeaLevel();
+        
+        // Spin on its own axis
+        _planetTransform.Rotate(Vector3.up, spinRate * Time.deltaTime);
     }
     
     void LateUpdate()
@@ -68,8 +72,7 @@ public class Planet : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (Camera.main == null) return;
-        if (Camera.main.transform.parent == _planetTransform) return;
+        if (Camera.main != null && Camera.main.GetComponent<CameraController>().targetTransform == _planetTransform) return;
         
         // outline the planet
         _outline.OutlineWidth = hoverOutlineWidth;
@@ -84,11 +87,11 @@ public class Planet : MonoBehaviour
     private void OnMouseDown()
     {
         if (Camera.main == null) return;
+        var cameraController = Camera.main.GetComponent<CameraController>();
         
-        var cameraTransform = Camera.main.transform;
+        if (cameraController.targetTransform == _planetTransform) return;
         
-        cameraTransform.SetParent(_planetTransform);
-        cameraTransform.localPosition = cameraOffset;
-        cameraTransform.LookAt(_planetTransform);
+        cameraController.targetTransform = _planetTransform;
+        cameraController.SetDistanceFrom(_planetTransform.position, 600);
     }
 }
