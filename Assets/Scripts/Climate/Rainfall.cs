@@ -4,7 +4,6 @@ namespace Climate
 {
     public class Rainfall : SimLayer
     {
-        public Texture2D rainfallMap;
 
         public static int width;
 
@@ -15,16 +14,16 @@ namespace Climate
         // Start is called before the first frame update
         void Start()
         {
-            rainfallMap = new Texture2D(width, height);
-            for (int x = 0; x < rainfallMap.width; x++)
+            _texture = new Texture2D(width, height);
+            for (int x = 0; x < _texture.width; x++)
             {
-                for (int y = 0; y < rainfallMap.height; y++) 
+                for (int y = 0; y < _texture.height; y++) 
                 { 
-                    float xCoord = (float)x / rainfallMap.width * rainScale;
-                    float yCoord = (float)y / rainfallMap.height * rainScale; 
+                    float xCoord = (float)x / _texture.width * rainScale;
+                    float yCoord = (float)y / _texture.height * rainScale; 
                     float density = Mathf.PerlinNoise(xCoord, yCoord);
                     Color pixelColor = new Color(color.r, color.g, color.b, density);
-                    rainfallMap.SetPixel(x, y, pixelColor);
+                    _texture.SetPixel(x, y, pixelColor);
                 }
             }
         }

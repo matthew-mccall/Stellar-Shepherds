@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SimLayer : MonoBehaviour
 {
-    private Texture2D _texture;
-    private List<Texture2D> _positiveDeltaTextures;
-    private List<Texture2D> _negativeDeltaTextures;
+    protected internal Texture2D _texture;
+    protected internal List<Texture2D> _positiveDeltaTextures;
+    protected internal List<Texture2D> _negativeDeltaTextures;
     
     // Start is called before the first frame update
     void Start()
@@ -122,7 +122,7 @@ public class SimLayer : MonoBehaviour
         return this;
     }
     
-    void ApplyDeltas()
+    internal void ApplyDeltas()
     {
         foreach (Texture2D deltaTexture in _positiveDeltaTextures)
         {

@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ecosystem
 {
     public class Species : SimLayer
     {
         // Temperature is in C, Rainfall is in cm
-        public static double netCarbonEffect;
+        public float netCarbonEffect;
         public static double minTolerantTemp;
         public static double maxTolerantTemp;
 
@@ -17,29 +18,28 @@ namespace Ecosystem
         public static Color color;
         public static bool isTerrestrialCreature; // true = land animal, false = aquatic animal
 
-        protected internal Texture2D densityMap;
-
         public static GameObject planet;
         internal double DeltaSeaLevel;
+        
         internal Texture2D TemperatureMap;
         internal Texture2D LandMap;
 
         public void GenerateDensityMap()
         {
-            densityMap = new Texture2D(width, height);
-            for (int x = 0; x < densityMap.width; x++)
+            _texture = new Texture2D(width, height);
+            for (int x = 0; x < _texture.width; x++)
             {
-                for (int y = 0; y < densityMap.height; y++)
+                for (int y = 0; y < _texture.height; y++)
                 {
-                    float xCoord = (float)x / densityMap.width * densityScale;
-                    float yCoord = (float)y / densityMap.height * densityScale;
+                    float xCoord = (float)x / _texture.width * densityScale;
+                    float yCoord = (float)y / _texture.height * densityScale;
                     float density = Mathf.PerlinNoise(xCoord, yCoord);
                     Color pixelColor = new Color(color.r, color.g, color.b, density);
-                    densityMap.SetPixel(x, y, pixelColor);
+                    _texture.SetPixel(x, y, pixelColor);
                 }
             }
 
-            densityMap.Apply();
+            _texture.Apply();
         }
 
         public virtual Texture2D Growth()
@@ -56,18 +56,18 @@ namespace Ecosystem
         {
             Texture2D growthMap = Growth();
             Texture2D deathMap = Death();
-            for (int x = 0; x < densityMap.width; x++)
+            for (int x = 0; x < _texture.width; x++)
             {
-                for (int y = 0; y < densityMap.height; y++)
+                for (int y = 0; y < _texture.height; y++)
                 {
-                    densityMap.SetPixel(x, y, new Color(color.r, color.g, color.b,
-                        (densityMap.GetPixel(x, y).grayscale + growthMap.GetPixel(x, y).grayscale -
+                    _texture.SetPixel(x, y, new Color(color.r, color.g, color.b,
+                        (_texture.GetPixel(x, y).grayscale + growthMap.GetPixel(x, y).grayscale -
                          deathMap.GetPixel(x, y).grayscale)));
                     
                 }
             }
 
-            densityMap.Apply();
+            _texture.Apply();
         }
         
         public void Update()

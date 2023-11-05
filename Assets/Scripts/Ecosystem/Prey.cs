@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Climate;
 using UnityEngine;
 
 namespace Ecosystem
@@ -14,28 +13,28 @@ namespace Ecosystem
         void Start()
         {
             GenerateDensityMap();
-            TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
+            TemperatureMap = planet.GetComponent<Climate.Temperature>()._texture;
         }
 
     public override Texture2D Growth()
     {
         Texture2D dMap = new Texture2D(width, height);
-        for (int x = 0; x < densityMap.width; x++)
+        for (int x = 0; x < _texture.width; x++)
         {
-            for (int y = 0; y < densityMap.height; y++)
+            for (int y = 0; y < _texture.height; y++)
             {
                 float foodAvailability = 0;
                 foreach (Producer producer in _producersList)
                 {
-                    foodAvailability += producer.densityMap.GetPixel(x, y).grayscale;
+                    foodAvailability += producer._texture.GetPixel(x, y).grayscale;
                 }
                 if (TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
                     TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f) && 
-                    foodAvailability>=growthFactor*densityMap.GetPixel(x,y).grayscale &&
+                    foodAvailability>=growthFactor*_texture.GetPixel(x,y).grayscale &&
                     ((isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale>DeltaSeaLevel/4)||
                      (!isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale<DeltaSeaLevel/4)))
                 {
-                    Color newColor = new Color(color.r, color.g, color.b, growthFactor*(foodAvailability-growthFactor*densityMap.GetPixel(x,y).grayscale));
+                    Color newColor = new Color(color.r, color.g, color.b, growthFactor*(foodAvailability-growthFactor*_texture.GetPixel(x,y).grayscale));
                     // moves a random direction or stays in the same place
                     int dir = Random.Range(0, 5);
                     switch (dir)
@@ -102,18 +101,18 @@ namespace Ecosystem
     public override Texture2D Death()
     {
         Texture2D dMap = new Texture2D(width, height);
-        for (int x = 0; x < densityMap.width; x++)
+        for (int x = 0; x < _texture.width; x++)
         {
-            for (int y = 0; y < densityMap.height; y++)
+            for (int y = 0; y < _texture.height; y++)
             {
                 float predationAmount = 0;
                 foreach (Predator predator in _predatorsList)
                 {
-                    predationAmount += predator.densityMap.GetPixel(x, y).grayscale;
+                    predationAmount += predator._texture.GetPixel(x, y).grayscale;
                 }
                 if (TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
                     TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f) && 
-                    predationAmount>=growthFactor*densityMap.GetPixel(x,y).grayscale&&
+                    predationAmount>=growthFactor*_texture.GetPixel(x,y).grayscale&&
                     ((isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale>DeltaSeaLevel/4)||
                      (!isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale<DeltaSeaLevel/4)))
                 {
