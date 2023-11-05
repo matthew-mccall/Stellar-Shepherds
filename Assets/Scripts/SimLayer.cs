@@ -5,7 +5,8 @@ using UnityEngine;
 public class SimLayer : MonoBehaviour
 {
     private Texture2D _texture;
-    private List<Texture2D> _deltaTextures;
+    private List<Texture2D> _positiveDeltaTextures;
+    private List<Texture2D> _negativeDeltaTextures;
     
     // Start is called before the first frame update
     void Start()
@@ -27,11 +28,11 @@ public class SimLayer : MonoBehaviour
         {
             for (int y = 0; y < _texture.height; y++)
             {
-                deltaTexture.SetPixel(x, y, _texture.GetPixel(x, y) + (other._texture.GetPixel(x, y) * weight));
+                deltaTexture.SetPixel(x, y, other._texture.GetPixel(x, y) * weight);
             }
         }
         
-        _deltaTextures.Add(deltaTexture);
+        _positiveDeltaTextures.Add(deltaTexture);
         return this;
     }
     
@@ -43,11 +44,11 @@ public class SimLayer : MonoBehaviour
         {
             for (int y = 0; y < _texture.height; y++)
             {
-                deltaTexture.SetPixel(x, y, _texture.GetPixel(x, y) - (other._texture.GetPixel(x, y) * weight));
+                deltaTexture.SetPixel(x, y, other._texture.GetPixel(x, y) * weight);
             }
         }
         
-        _deltaTextures.Add(deltaTexture);
+        _negativeDeltaTextures.Add(deltaTexture);
         return this;
     }
 
@@ -92,7 +93,7 @@ public class SimLayer : MonoBehaviour
             }
         }
         
-        _deltaTextures.Add(deltaTexture);
+        _positiveDeltaTextures.Add(deltaTexture);
         return this;
     }
 
@@ -117,19 +118,30 @@ public class SimLayer : MonoBehaviour
             }
         }
         
-        _deltaTextures.Add(deltaTexture);
+        _positiveDeltaTextures.Add(deltaTexture);
         return this;
     }
     
     void ApplyDeltas()
     {
-        foreach (Texture2D deltaTexture in _deltaTextures)
+        foreach (Texture2D deltaTexture in _positiveDeltaTextures)
         {
             for (int x = 0; x < _texture.width; x++)
             {
                 for (int y = 0; y < _texture.height; y++)
                 {
                     _texture.SetPixel(x, y, _texture.GetPixel(x, y) + deltaTexture.GetPixel(x, y));
+                }
+            }
+        }
+        
+        foreach (Texture2D deltaTexture in _negativeDeltaTextures)
+        {
+            for (int x = 0; x < _texture.width; x++)
+            {
+                for (int y = 0; y < _texture.height; y++)
+                {
+                    _texture.SetPixel(x, y, _texture.GetPixel(x, y) - deltaTexture.GetPixel(x, y));
                 }
             }
         }
