@@ -13,9 +13,14 @@ public class Temperature : MonoBehaviour
     public static Color color;
 
     public static float tempScale;
+
+    public static GameObject planet;
+
+    private Texture2D _carbonPollutionMap;
     // Start is called before the first frame update
     void Start()
     {
+        _carbonPollutionMap = planet.GetComponent<CarbonPollution>().carbonPollutionMap;
         temperatureMap = new Texture2D(width, height);
         for (int x = 0; x < temperatureMap.width; x++)
         {
@@ -44,9 +49,18 @@ public class Temperature : MonoBehaviour
         temperatureMap.Apply();
     }
 
+    public Texture2D updateTempOnCarbon()
+    {
+        Texture2D dMap = new Texture2D(width, height);
+        
+        
+        return dMap;
+    }
+    
     // Update is called once per frame
     void Update()
     {
-        
+        // change temperature based on temperatureChange
+        Texture2D dCarbonMap = updateTempOnCarbon();
     }
 }

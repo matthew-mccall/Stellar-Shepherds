@@ -59,10 +59,10 @@ public class Planet : MonoBehaviour
     {
         // Orbit around (0, 0, 0)
         _planetTransform.RotateAround(Vector3.zero, Vector3.up, orbitalVelocity * Time.deltaTime);
-        calculateNewSeaLevel();
         
         // Spin on its own axis
         _planetTransform.Rotate(Vector3.up, spinRate * Time.deltaTime);
+        calculateNewSeaLevel();
     }
     
     void LateUpdate()
