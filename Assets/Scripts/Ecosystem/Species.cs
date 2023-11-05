@@ -17,11 +17,14 @@ public class Species : MonoBehaviour
     public static int height;
     public static float densityScale;
     public static Color color;
+    public static Boolean isTerrestrialCreature; // true = land animal, false = aquatic animal
     
     protected internal Texture2D densityMap;
     
     public static GameObject planet;
+    internal double DeltaSeaLevel;
     internal Texture2D TemperatureMap;
+    internal Texture2D LandMap;
 
     public void GenerateDensityMap()
     {
@@ -62,5 +65,6 @@ public class Species : MonoBehaviour
                     (densityMap.GetPixel(x,y).grayscale+growthMap.GetPixel(x,y).grayscale+deathMap.GetPixel(x,y).grayscale)));
             }
         }
+        densityMap.Apply();
     }
 }

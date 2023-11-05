@@ -14,7 +14,9 @@ public class Producer : Species
     void Start()
     {
         TemperatureMap = planet.GetComponent<Temperature>().temperatureMap;
+        LandMap = planet.GetComponent<Land>().LandMap;
         _rainfallMap = planet.GetComponent<Rainfall>().rainfallMap;
+        DeltaSeaLevel = planet.GetComponent<Planet>().deltaSeaLevel;
         GenerateDensityMap();
     }
 
@@ -25,10 +27,13 @@ public class Producer : Species
         {
             for (int y = 0; y < densityMap.height; y++)
             {
+                
                 if (_rainfallMap.GetPixel(x, y).grayscale > (MinRainfall / 400f) &&
                     _rainfallMap.GetPixel(x, y).grayscale < (MaxRainfall / 400f) &&
                     TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
-                    TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f))
+                    TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f)&&
+                    ((isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale>DeltaSeaLevel/4)||
+                     (!isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale<DeltaSeaLevel/4)))
                 {
                     int count = 0;
                     float val = 0;
@@ -82,7 +87,9 @@ public class Producer : Species
                 if (_rainfallMap.GetPixel(x, y).grayscale > (MinRainfall / 400f) &&
                     _rainfallMap.GetPixel(x, y).grayscale < (MaxRainfall / 400f) &&
                     TemperatureMap.GetPixel(x, y).grayscale > (minTolerantTemp / 35f) &&
-                    TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f))
+                    TemperatureMap.GetPixel(x, y).grayscale < (maxTolerantTemp / 35f)&&
+                    ((isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale>DeltaSeaLevel/4)||
+                     (!isTerrestrialCreature&&LandMap.GetPixel(x,y).grayscale<DeltaSeaLevel/4)))
                 {
                     float val = 0;
 
@@ -96,12 +103,12 @@ public class Producer : Species
                 }
                 else
                 {
-                    Color newColor = new Color(color.r, color.g, color.b, 0);
+                    Color newColor = new Color(color.r, color.g, color.b, 1);
                     dMap.SetPixel(x, y, newColor);
                 }
             }
         }
-
+        dMap.Apply();
         return dMap;
     }
 
