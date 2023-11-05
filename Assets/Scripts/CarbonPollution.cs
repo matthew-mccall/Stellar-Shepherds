@@ -19,12 +19,12 @@ public class CarbonPollution : SimLayer
     // Start is called before the first frame update
     void Start()
     {
-        _texture = new Texture2D(width, height);
+        Texture = new Texture2D(width, height);
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                _texture.SetPixel(x, y, new Color(color.r, color.g, color.b, 0f));
+                Texture.SetPixel(x, y, new Color(color.r, color.g, color.b, 0f));
             }
         }
         

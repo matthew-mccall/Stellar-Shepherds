@@ -20,32 +20,32 @@ namespace Climate
         void Start()
         {
             // _carbonPollutionMap = planet.GetComponent<CarbonPollution>().carbonPollutionMap;
-            _texture = new Texture2D(width, height);
-            for (int x = 0; x < _texture.width; x++)
+            Texture = new Texture2D(width, height);
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < _texture.height; y++) 
+                for (int y = 0; y < Texture.height; y++) 
                 { 
-                    float xCoord = (float)x / _texture.width * tempScale;
-                    float yCoord = (float)y / _texture.height * tempScale; 
+                    float xCoord = (float)x / Texture.width * tempScale;
+                    float yCoord = (float)y / Texture.height * tempScale; 
                     float density = Mathf.PerlinNoise(xCoord, yCoord);
                     Color pixelColor = new Color(color.r, color.g, color.b, density);
-                    _texture.SetPixel(x, y, pixelColor);
+                    Texture.SetPixel(x, y, pixelColor);
                 }
             }
-            for (int x = 0; x < _texture.width; x++)
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < _texture.height; y++)
+                for (int y = 0; y < Texture.height; y++)
                 {
-                    float temperature = _texture.GetPixel(x, y).r; // Extract the temperature value
+                    float temperature = Texture.GetPixel(x, y).r; // Extract the temperature value
 
                     // Modify the temperature value based on the gradient
-                    float normalizedY = (float)y / _texture.height;
+                    float normalizedY = (float)y / Texture.height;
                     temperature *= 1.0f - Mathf.Abs(normalizedY - 0.5f) * 2.0f;
 
-                    _texture.SetPixel(x, y, new Color(temperature, temperature, temperature));
+                    Texture.SetPixel(x, y, new Color(temperature, temperature, temperature));
                 }
             }
-            _texture.Apply();
+            Texture.Apply();
 
             AddWeighted(CarbonPollution, (float)1E-6);
         }

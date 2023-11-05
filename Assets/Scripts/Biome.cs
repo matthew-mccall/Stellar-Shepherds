@@ -64,8 +64,8 @@ public class Biome : SimLayer
     {
         LandMap = Planet.GetComponent<Land>().LandMap;
         DeltaSeaHeight = Planet.GetComponent<Planet>().deltaSeaLevel;
-        RainMap = Planet.GetComponent<Climate.Rainfall>()._texture;
-        TemperatureMap = Planet.GetComponent<Climate.Temperature>()._texture;
+        RainMap = Planet.GetComponent<Climate.Rainfall>().Texture;
+        TemperatureMap = Planet.GetComponent<Climate.Temperature>().Texture;
     }
 
     // Update is called once per frame
@@ -125,7 +125,7 @@ public class Biome : SimLayer
                 {
                     biome = LandBiome.Ocean;
                 }
-                _texture.SetPixel(x,y,GetColorForBiome(biome));
+                Texture.SetPixel(x,y,GetColorForBiome(biome));
             }
         }
     }

@@ -14,16 +14,16 @@ namespace Climate
         // Start is called before the first frame update
         void Start()
         {
-            _texture = new Texture2D(width, height);
-            for (int x = 0; x < _texture.width; x++)
+            Texture = new Texture2D(width, height);
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < _texture.height; y++) 
+                for (int y = 0; y < Texture.height; y++) 
                 { 
-                    float xCoord = (float)x / _texture.width * rainScale;
-                    float yCoord = (float)y / _texture.height * rainScale; 
+                    float xCoord = (float)x / Texture.width * rainScale;
+                    float yCoord = (float)y / Texture.height * rainScale; 
                     float density = Mathf.PerlinNoise(xCoord, yCoord);
                     Color pixelColor = new Color(color.r, color.g, color.b, density);
-                    _texture.SetPixel(x, y, pixelColor);
+                    Texture.SetPixel(x, y, pixelColor);
                 }
             }
         }

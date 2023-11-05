@@ -15,9 +15,9 @@ namespace Ecosystem
     // Start is called before the first frame update
     void Start()
     {
-        TemperatureMap = planet.GetComponent<Temperature>()._texture;
+        TemperatureMap = planet.GetComponent<Temperature>().Texture;
         LandMap = planet.GetComponent<Land>().LandMap;
-        _rainfallMap = planet.GetComponent<Rainfall>()._texture;
+        _rainfallMap = planet.GetComponent<Rainfall>().Texture;
         DeltaSeaLevel = planet.GetComponent<Planet>().deltaSeaLevel;
         GenerateDensityMap();
     }
@@ -25,9 +25,9 @@ namespace Ecosystem
     public override Texture2D Growth()
     {
         Texture2D dMap = new Texture2D(width, height);
-        for (int x = 0; x < _texture.width; x++)
+        for (int x = 0; x < Texture.width; x++)
         {
-            for (int y = 0; y < _texture.height; y++)
+            for (int y = 0; y < Texture.height; y++)
             {
                 
                 if (_rainfallMap.GetPixel(x, y).grayscale > (MinRainfall / 400f) &&
@@ -41,25 +41,25 @@ namespace Ecosystem
                     float val = 0;
                     if (y > 0)
                     {
-                        val += _texture.GetPixel(x, y - 1).grayscale;
+                        val += Texture.GetPixel(x, y - 1).grayscale;
                         count++;
                     }
 
-                        if (y < _texture.height)
+                        if (y < Texture.height)
                         {
-                            val += _texture.GetPixel(x, y + 1).grayscale;
+                            val += Texture.GetPixel(x, y + 1).grayscale;
                             count++;
                         }
 
                         if (x > 0)
                         {
-                            val += _texture.GetPixel(x - 1, y).grayscale;
+                            val += Texture.GetPixel(x - 1, y).grayscale;
                             count++;
                         }
 
-                        if (x < _texture.width)
+                        if (x < Texture.width)
                         {
-                            val += _texture.GetPixel(x + 1, y).grayscale;
+                            val += Texture.GetPixel(x + 1, y).grayscale;
                             count++;
                         }
 
@@ -82,9 +82,9 @@ namespace Ecosystem
     public override Texture2D Death()
     {
         Texture2D dMap = new Texture2D(width, height);
-        for (int x = 0; x < _texture.width; x++)
+        for (int x = 0; x < Texture.width; x++)
         {
-            for (int y = 0; y < _texture.height; y++)
+            for (int y = 0; y < Texture.height; y++)
             {
                 if (_rainfallMap.GetPixel(x, y).grayscale > (MinRainfall / 400f) &&
                     _rainfallMap.GetPixel(x, y).grayscale < (MaxRainfall / 400f) &&
@@ -96,7 +96,7 @@ namespace Ecosystem
                     float val = 0;
                     foreach (Prey prey in _preyList)
                     {
-                        val += prey._texture.GetPixel(x, y).grayscale;
+                        val += prey.Texture.GetPixel(x, y).grayscale;
                     }
                     Color newColor = new Color(color.r, color.g, color.b, deathFactor * (val));
                     dMap.SetPixel(x, y, newColor);

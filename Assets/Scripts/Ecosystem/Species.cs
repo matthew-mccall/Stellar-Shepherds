@@ -26,20 +26,20 @@ namespace Ecosystem
 
         public void GenerateDensityMap()
         {
-            _texture = new Texture2D(width, height);
-            for (int x = 0; x < _texture.width; x++)
+            Texture = new Texture2D(width, height);
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < _texture.height; y++)
+                for (int y = 0; y < Texture.height; y++)
                 {
-                    float xCoord = (float)x / _texture.width * densityScale;
-                    float yCoord = (float)y / _texture.height * densityScale;
+                    float xCoord = (float)x / Texture.width * densityScale;
+                    float yCoord = (float)y / Texture.height * densityScale;
                     float density = Mathf.PerlinNoise(xCoord, yCoord);
                     Color pixelColor = new Color(color.r, color.g, color.b, density);
-                    _texture.SetPixel(x, y, pixelColor);
+                    Texture.SetPixel(x, y, pixelColor);
                 }
             }
 
-            _texture.Apply();
+            Texture.Apply();
         }
 
         public virtual Texture2D Growth()
@@ -56,18 +56,18 @@ namespace Ecosystem
         {
             Texture2D growthMap = Growth();
             Texture2D deathMap = Death();
-            for (int x = 0; x < _texture.width; x++)
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < _texture.height; y++)
+                for (int y = 0; y < Texture.height; y++)
                 {
-                    _texture.SetPixel(x, y, new Color(color.r, color.g, color.b,
-                        (_texture.GetPixel(x, y).grayscale + growthMap.GetPixel(x, y).grayscale -
+                    Texture.SetPixel(x, y, new Color(color.r, color.g, color.b,
+                        (Texture.GetPixel(x, y).grayscale + growthMap.GetPixel(x, y).grayscale -
                          deathMap.GetPixel(x, y).grayscale)));
                     
                 }
             }
 
-            _texture.Apply();
+            Texture.Apply();
         }
         
         public void Update()

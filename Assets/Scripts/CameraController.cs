@@ -8,11 +8,8 @@ public class CameraController : MonoBehaviour
     public int zoomSpeed = 1000;
 
     public Transform targetTransform;
-    
-    private Vector3 _initialPosition;
-    private Quaternion _initialRotation;
 
-    private readonly uint _initialDistanceFromSun = 10000;
+    private const uint InitialDistanceFromSun = 10000;
 
     public Vector3 lastOffset;
     
@@ -21,11 +18,8 @@ public class CameraController : MonoBehaviour
     {
         var cameraTransform = transform;
         var cameraPosition = cameraTransform.position;
-
-        _initialPosition = cameraPosition;
-        _initialRotation = cameraTransform.rotation;
         
-        SetDistanceFrom(Vector3.zero, _initialDistanceFromSun);
+        SetDistanceFrom(Vector3.zero, InitialDistanceFromSun);
         cameraTransform.RotateAround(Vector3.zero, Vector3.up, 45);
         
         lastOffset = cameraPosition - cameraPosition;
@@ -50,7 +44,7 @@ public class CameraController : MonoBehaviour
         
         if (Input.GetButton("Cancel"))
         {
-            SetDistanceFrom(Vector3.zero, _initialDistanceFromSun);
+            SetDistanceFrom(Vector3.zero, InitialDistanceFromSun);
             targetTransform = null;
         }
     }

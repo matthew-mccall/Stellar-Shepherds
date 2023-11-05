@@ -18,45 +18,28 @@ public class Planet : MonoBehaviour
     
     private Transform _planetTransform;
     private Outline _outline;
-    
-    private List<Species> _speciesList;
-    private Rainfall _rainfall;
-    private Temperature _temperature;
+
+    private List<SimLayer> _simLayers;
+    private List<Material> _simLayerMaterials;
     
     // Start is called before the first frame update
     void Start()
     {
-        temperatureChange = 0;
-        averageCarbonUnits = 0;
-        deltaSeaLevel = 0;
         _planetTransform = GetComponent<Transform>();
         _outline = GetComponent<Outline>();
-    }
-
-    public void carbonChange(double amount)
-    {
-        averageCarbonUnits += amount;
-        return;
-    }
-
-    public double getCarbonChange()
-    {
-        return averageCarbonUnits;
-    }
-
-    public double getTemperatureChange()
-    {
-        return temperatureChange;
-    }
-
-    private void calculateTemperatureChange()
-    {
-        temperatureChange = averageCarbonUnits / 1E6;
-    }
-
-    private void calculateNewSeaLevel()
-    {
-        deltaSeaLevel = averageCarbonUnits / 1E6;
+        
+        _simLayers = new List<SimLayer>();
+        
+        // Make materials for each sim layer
+        _simLayerMaterials = new List<Material>();
+        foreach (var simLayer in _simLayers)
+        {
+            var material = new Material(Shader.Find("Universal Render Pipeline/Lit"))
+            {
+                mainTexture = simLayer.Texture
+            };
+            _simLayerMaterials.Add(material);
+        }
     }
     
     // Update is called once per frame
@@ -67,12 +50,6 @@ public class Planet : MonoBehaviour
         
         // Spin on its own axis
         _planetTransform.Rotate(Vector3.up, spinRate * Time.deltaTime);
-        calculateNewSeaLevel();
-    }
-    
-    void LateUpdate()
-    {
-        calculateTemperatureChange();
     }
 
     private void OnMouseOver()
