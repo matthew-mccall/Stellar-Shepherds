@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class SimLayer
 {
-    public Texture2D Texture { get; set; }
+    public Texture2D Texture { get; internal set; }
     public String Name { get; private set; }
     
-    private List<Texture2D> _positiveDeltaTextures;
-    private List<Texture2D> _negativeDeltaTextures;
-
-    public SimLayer(String name = "")
+    internal List<Texture2D> _positiveDeltaTextures;
+    internal List<Texture2D> _negativeDeltaTextures;
+    
+    // Start is called before the first frame update
+    public SimLayer(String name="")
     {
         Name = name;
         _positiveDeltaTextures = new List<Texture2D>();
@@ -121,7 +122,7 @@ public class SimLayer
         return this;
     }
     
-    void ApplyDeltas()
+    internal void ApplyDeltas()
     {
         foreach (Texture2D deltaTexture in _positiveDeltaTextures)
         {

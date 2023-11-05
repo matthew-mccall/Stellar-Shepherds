@@ -12,8 +12,7 @@ public class Biome : SimLayer
     protected internal double DeltaSeaHeight;
     protected internal Texture2D RainMap;
     protected internal Texture2D TemperatureMap;
-
-    public Texture2D BiomeMap;
+    
     public static int width;
     public static int height;
     
@@ -66,7 +65,7 @@ public class Biome : SimLayer
         LandMap = Planet.GetComponent<Land>().LandMap;
         DeltaSeaHeight = Planet.GetComponent<Planet>().deltaSeaLevel;
         RainMap = Planet.GetComponent<Climate.Rainfall>().Texture;
-        TemperatureMap = Planet.GetComponent<Climate.Temperature>().temperatureMap;
+        TemperatureMap = Planet.GetComponent<Climate.Temperature>().Texture;
     }
 
     // Update is called once per frame
@@ -126,7 +125,7 @@ public class Biome : SimLayer
                 {
                     biome = LandBiome.Ocean;
                 }
-                BiomeMap.SetPixel(x,y,GetColorForBiome(biome));
+                Texture.SetPixel(x,y,GetColorForBiome(biome));
             }
         }
     }

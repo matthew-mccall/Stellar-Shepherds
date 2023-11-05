@@ -4,8 +4,6 @@ namespace Climate
 {
     public class Temperature : SimLayer
     {
-        public Texture2D temperatureMap;
-
         public static int width;
 
         public static int height;
@@ -16,58 +14,48 @@ namespace Climate
 
         public static GameObject planet;
 
-        private Texture2D _carbonPollutionMap;
-    
-        public Temperature(CarbonPollution carbonPollution)
-        {
-            _carbonPollutionMap = carbonPollution.Texture;
-        }
-    
+        public CarbonPollution CarbonPollution;
+        
         // Start is called before the first frame update
         void Start()
         {
             // _carbonPollutionMap = planet.GetComponent<CarbonPollution>().carbonPollutionMap;
-            temperatureMap = new Texture2D(width, height);
-            for (int x = 0; x < temperatureMap.width; x++)
+            Texture = new Texture2D(width, height);
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < temperatureMap.height; y++) 
+                for (int y = 0; y < Texture.height; y++) 
                 { 
-                    float xCoord = (float)x / temperatureMap.width * tempScale;
-                    float yCoord = (float)y / temperatureMap.height * tempScale; 
+                    float xCoord = (float)x / Texture.width * tempScale;
+                    float yCoord = (float)y / Texture.height * tempScale; 
                     float density = Mathf.PerlinNoise(xCoord, yCoord);
                     Color pixelColor = new Color(color.r, color.g, color.b, density);
-                    temperatureMap.SetPixel(x, y, pixelColor);
+                    Texture.SetPixel(x, y, pixelColor);
                 }
             }
-            for (int x = 0; x < temperatureMap.width; x++)
+            for (int x = 0; x < Texture.width; x++)
             {
-                for (int y = 0; y < temperatureMap.height; y++)
+                for (int y = 0; y < Texture.height; y++)
                 {
-                    float temperature = temperatureMap.GetPixel(x, y).r; // Extract the temperature value
+                    float temperature = Texture.GetPixel(x, y).r; // Extract the temperature value
 
                     // Modify the temperature value based on the gradient
-                    float normalizedY = (float)y / temperatureMap.height;
+                    float normalizedY = (float)y / Texture.height;
                     temperature *= 1.0f - Mathf.Abs(normalizedY - 0.5f) * 2.0f;
 
-                    temperatureMap.SetPixel(x, y, new Color(temperature, temperature, temperature));
+                    Texture.SetPixel(x, y, new Color(temperature, temperature, temperature));
                 }
             }
-            temperatureMap.Apply();
+            Texture.Apply();
+
+            AddWeighted(CarbonPollution, (float)1E-6);
         }
 
-        public Texture2D updateTempOnCarbon()
-        {
-            Texture2D dMap = new Texture2D(width, height);
         
-        
-            return dMap;
-        }
     
         // Update is called once per frame
         void Update()
         {
-            // change temperature based on temperatureChange
-            Texture2D dCarbonMap = updateTempOnCarbon();
+            ApplyDeltas();
         }
     }
 }
